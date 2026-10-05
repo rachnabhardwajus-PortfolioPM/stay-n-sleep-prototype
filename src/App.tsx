@@ -1,6 +1,7 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { BookingProvider, useBooking } from './state/BookingContext'
 import { LoginPage } from './pages/LoginPage'
+import { CaseStudyPage } from './pages/CaseStudyPage'
 import { DashboardPage } from './pages/DashboardPage'
 import { TripDetailsPage } from './pages/booking/TripDetailsPage'
 import { AddEmployeesPage } from './pages/booking/AddEmployeesPage'
@@ -19,6 +20,7 @@ function AppRoutes() {
   return (
     <Routes>
       <Route path="/login" element={<LoginPage />} />
+      <Route path="/case-study" element={<CaseStudyPage />} />
       <Route
         path="/dashboard"
         element={
