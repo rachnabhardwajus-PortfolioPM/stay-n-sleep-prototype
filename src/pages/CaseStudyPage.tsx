@@ -313,6 +313,16 @@ export function CaseStudyPage() {
               through his company's loyalty benefits.
             </p>
           </Card>
+          <figure className="mt-6">
+            <a href="/case-study-assets/persona.png" target="_blank" rel="noreferrer">
+              <img
+                src="/case-study-assets/persona.png"
+                alt="Key customer persona: Derek, the travel manager, with his goals, needs and pain points"
+                className="w-full max-w-3xl rounded-xl border border-slate-200 bg-white shadow-sm"
+              />
+            </a>
+            <figcaption className="mt-2 text-sm text-slate-500">Key customer persona from the research phase</figcaption>
+          </figure>
           <h3 className="mt-8 font-bold text-slate-900">Derek books a team trip in one flow</h3>
           <ol className="mt-4 flex flex-wrap items-center gap-2 text-sm">
             {JOURNEY_STEPS.map((step, index) => (
