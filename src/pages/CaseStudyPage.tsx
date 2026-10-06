@@ -1,5 +1,4 @@
 import type { ReactNode } from 'react'
-import { Link } from 'react-router-dom'
 import { Badge } from '../components/ui/Badge'
 import { Card } from '../components/ui/Card'
 
@@ -61,50 +60,36 @@ const MVP_FEATURES = [
 
 const TRADEOFFS = [
   {
-    title: 'Depth over breadth',
-    decision:
-      'Build the loyalty savings and group-booking journey end to end, and hold back the Reporting Dashboard and Priority Support.',
-    why: "It's the core value proposition. If companies don't value automatic savings on team bookings, reporting and support won't save the program.",
-    cost: "Travel managers can't yet see spend reports or get priority help in the prototype.",
+    title: 'Retention vs. acquisition',
+    text: 'We prioritized loyalty features for existing corporate customers, who spent 31% more than new customers, over acquisition-focused features. We accepted slower short-term customer growth in exchange for stronger retention and lifetime value.',
   },
   {
-    title: 'Show dollars saved, never the discount %',
-    decision: 'The booking screens show "−$414 saved", never "15% off".',
-    why: 'A dollar amount feels real and is easier to justify to finance. Keeping the % private also lets the business adjust tier rates later without users feeling something was taken away.',
-    cost: "Less transparency. Managers can't easily compare tier benefits up front.",
+    title: 'Booking frequency vs. margin per booking',
+    text: 'We introduced 10–20% loyalty discounts to encourage repeat bookings. We accepted lower margin on discounted transactions, expecting increased booking frequency and customer lifetime value to compensate.',
   },
   {
-    title: 'Loyalty belongs to the company, not the individual',
-    decision:
-      'The Silver, Gold and Platinum tier is earned and owned by the company account, based on its total annual spend.',
-    why: 'The company is the customer and pays the bill, so rewarding the company drives repeat corporate bookings.',
-    cost: "Individual employees don't feel personally rewarded. Traveler perks are a later roadmap item.",
+    title: 'Immediate value clarity vs. tier transparency',
+    text: 'We displayed the actual dollar savings, such as “You saved $414,” rather than emphasizing the discount percentage or complete tier rules. This made the benefit tangible but made it harder for travel managers to compare future tier benefits in advance.',
   },
   {
-    title: 'Automatic discount: no codes, no tier selection',
-    decision: "The system recognizes the company's tier and applies savings automatically.",
-    why: 'Zero friction. Derek never enters a loyalty number or a coupon, or forgets to.',
-    cost: 'Automatic savings are easy to overlook, so I made them visible on every step (badges, struck-through prices, a savings line).',
+    title: 'Company value vs. traveler motivation',
+    text: 'We designed loyalty status at the company level because the company paid for the bookings. This aligned the reward with the buyer but provided less personal recognition to the employees making the trips.',
   },
   {
-    title: 'Manual employee entry instead of HR-directory integration',
-    decision: "Derek types each traveler's name and work email.",
-    why: 'Faster to ship and validate. Integrations with systems like Workday or Okta are expensive and vary by customer.',
-    cost: 'Slow for large groups. Directory integration is a clear next step if adoption grows.',
+    title: 'Checkout simplicity vs. reward visibility',
+    text: 'We applied discounts automatically without codes or redemption steps. This reduced booking friction, but it also made the reward easier to overlook, requiring us to reinforce the savings throughout the journey.',
   },
   {
-    title: 'Happy path only, with mock data and no backend',
-    decision:
-      'The prototype covers one complete successful booking, with simulated SSO, payments and property data.',
-    why: 'It cost $0, shipped in weeks, and anyone can click through it with no setup.',
-    cost: "Errors, edits, cancellations and real payments aren't tested yet. Edit and Cancel buttons are visible but don't work.",
+    title: 'Speed to learning vs. feature breadth',
+    text: 'We launched loyalty and group booking first to validate repeat-booking behavior and demand for coordinated travel. We deferred reporting and priority support, accepting a less complete experience in exchange for faster learning.',
   },
-  {
-    title: 'Desktop-first',
-    decision: 'Designed for desktop screens first.',
-    why: 'Corporate travel managers plan and book group trips at their desks, often alongside budgets and calendars.',
-    cost: 'The mobile experience is basic. A mobile itinerary view for traveling employees comes later.',
-  },
+]
+
+const SCOPE_DECISIONS = [
+  ['Happy path only, with mock data and no backend', 'One complete successful booking, with simulated SSO, payments and property data.'],
+  ['Manual employee entry', "Derek types each traveler's name and work email. No HR-directory integration."],
+  ['Desktop-first', 'Travel managers plan and book group trips at their desks.'],
+  ['Edit and Cancel are visible but not functional', 'They show what the broader product offers.'],
 ]
 
 const ROADMAP = [
@@ -191,8 +176,12 @@ function Section({ id, number, title, children }: { id: string; number: string; 
 }
 
 export function CaseStudyPage() {
+  // ?embed hides the top bar and footer when the page is shown inside the portfolio site
+  const embedded = new URLSearchParams(window.location.search).has('embed')
+
   return (
     <div className="min-h-screen bg-slate-50 text-slate-700">
+      {!embedded && (
       <header className="sticky top-0 z-10 border-b border-slate-200 bg-white/95 backdrop-blur">
         <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-6 py-3">
           <a href={PORTFOLIO_URL} className="whitespace-nowrap text-sm font-semibold text-slate-600 hover:text-slate-900">
@@ -205,11 +194,12 @@ export function CaseStudyPage() {
               </a>
             ))}
           </nav>
-          <Link to="/login" className="whitespace-nowrap text-sm font-semibold text-blue-600 hover:text-blue-700">
+          <a href="/login" target="_blank" rel="noreferrer" className="whitespace-nowrap text-sm font-semibold text-blue-600 hover:text-blue-700">
             Live prototype →
-          </Link>
+          </a>
         </div>
       </header>
+      )}
 
       <div className="bg-slate-900 text-white">
         <div className="mx-auto max-w-5xl px-6 py-16">
@@ -224,9 +214,9 @@ export function CaseStudyPage() {
             their company's loyalty tier. I took it from research and PRD to design to a live, working prototype.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <Link to="/login" className={LINK_PRIMARY}>
+            <a href="/login" target="_blank" rel="noreferrer" className={LINK_PRIMARY}>
               Live Prototype
-            </Link>
+            </a>
             <a href={GITHUB_URL} target="_blank" rel="noreferrer" className={LINK_LIGHT}>
               GitHub
             </a>
@@ -375,8 +365,8 @@ export function CaseStudyPage() {
 
         <Section id="tradeoffs" number="05" title="Tradeoffs">
           <p className="max-w-3xl leading-relaxed">
-            Every product decision has a cost. These are the calls I made for the first version and what each one gave
-            up.
+            Each of these was a choice between two things we wanted. This is what we picked and what we accepted in
+            return.
           </p>
           <div className="mt-6 grid gap-4 md:grid-cols-2">
             {TRADEOFFS.map((item, index) => (
@@ -384,20 +374,7 @@ export function CaseStudyPage() {
                 <h3 className="font-bold text-slate-900">
                   {index + 1}. {item.title}
                 </h3>
-                <dl className="mt-3 space-y-2 text-sm">
-                  <div>
-                    <dt className="inline font-semibold text-slate-900">Decision: </dt>
-                    <dd className="inline">{item.decision}</dd>
-                  </div>
-                  <div>
-                    <dt className="inline font-semibold text-slate-900">Why: </dt>
-                    <dd className="inline">{item.why}</dd>
-                  </div>
-                  <div>
-                    <dt className="inline font-semibold text-amber-700">Trade-off: </dt>
-                    <dd className="inline">{item.cost}</dd>
-                  </div>
-                </dl>
+                <p className="mt-3 text-sm leading-relaxed">{item.text}</p>
               </Card>
             ))}
           </div>
@@ -466,7 +443,6 @@ export function CaseStudyPage() {
                   <img
                     src={`/case-study-assets/${file}`}
                     alt={caption}
-                    loading="lazy"
                     className="w-full rounded-xl border border-slate-200 shadow-sm"
                   />
                 </a>
@@ -474,6 +450,14 @@ export function CaseStudyPage() {
               </figure>
             ))}
           </div>
+          <h3 className="mt-10 font-bold text-slate-900">Prototype scope decisions</h3>
+          <ul className="mt-3 max-w-3xl space-y-2 text-sm">
+            {SCOPE_DECISIONS.map(([decision, detail]) => (
+              <li key={decision}>
+                <span className="font-semibold text-slate-900">{decision}.</span> {detail}
+              </li>
+            ))}
+          </ul>
         </Section>
 
         <Section id="build" number="09" title="Build">
@@ -495,9 +479,9 @@ export function CaseStudyPage() {
             <a href={GITHUB_URL} target="_blank" rel="noreferrer" className={LINK_SECONDARY}>
               View Code on GitHub
             </a>
-            <Link to="/login" className={LINK_PRIMARY}>
+            <a href="/login" target="_blank" rel="noreferrer" className={LINK_PRIMARY}>
               Try the Live App
-            </Link>
+            </a>
           </div>
         </Section>
 
@@ -531,6 +515,7 @@ export function CaseStudyPage() {
         </Section>
       </main>
 
+      {!embedded && (
       <footer className="border-t border-slate-200 bg-white">
         <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-3 px-6 py-6 text-sm text-slate-500">
           <p>© 2026 Rachna Bhardwaj</p>
@@ -539,6 +524,7 @@ export function CaseStudyPage() {
           </a>
         </div>
       </footer>
+      )}
     </div>
   )
 }
