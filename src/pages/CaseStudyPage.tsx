@@ -1,10 +1,11 @@
-import type { ReactNode } from 'react'
+import type { MouseEvent, ReactNode } from 'react'
 import { Badge } from '../components/ui/Badge'
 import { Card } from '../components/ui/Card'
 
 const PORTFOLIO_URL = 'https://rachnabhardwajus.wixsite.com/rachna-bhardwaj-pm'
 const GITHUB_URL = 'https://github.com/rachnabhardwajus-PortfolioPM/stay-n-sleep-prototype'
-const PRD_URL = '/case-study-assets/Stay-n-Sleep-PRD.pdf'
+// An HTML copy, because a PDF opened from inside an embedded (sandboxed) page shows blank
+const PRD_URL = '/case-study-assets/prd.html'
 
 const NAV_SECTIONS = [
   ['research', 'Research'],
@@ -165,6 +166,14 @@ const LINK_PRIMARY = `${LINK_BASE} bg-blue-600 text-white hover:bg-blue-700`
 const LINK_LIGHT = `${LINK_BASE} border border-white/20 bg-white/10 text-white hover:bg-white/20`
 const LINK_SECONDARY = `${LINK_BASE} border border-slate-300 bg-white text-slate-700 hover:bg-slate-50`
 
+// Scrolls in code rather than relying on the #hash, which does nothing when the page is embedded
+function scrollToSection(id: string) {
+  return (event: MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault()
+    document.getElementById(id)?.scrollIntoView({ block: 'start' })
+  }
+}
+
 function Section({ id, number, title, children }: { id: string; number: string; title: string; children: ReactNode }) {
   return (
     <section id={id} className="scroll-mt-20 border-t border-slate-200 py-14">
@@ -189,7 +198,7 @@ export function CaseStudyPage() {
           </a>
           <nav className="hidden gap-4 text-sm font-medium text-slate-500 xl:flex">
             {NAV_SECTIONS.map(([id, label]) => (
-              <a key={id} href={`#${id}`} className="hover:text-slate-900">
+              <a key={id} href={`#${id}`} onClick={scrollToSection(id)} className="hover:text-slate-900">
                 {label}
               </a>
             ))}
@@ -220,11 +229,11 @@ export function CaseStudyPage() {
             <a href={GITHUB_URL} target="_blank" rel="noreferrer" className={LINK_LIGHT}>
               GitHub
             </a>
-            <a href="#design" className={LINK_LIGHT}>
+            <a href="#design" onClick={scrollToSection('design')} className={LINK_LIGHT}>
               Figma Screens
             </a>
             <a href={PRD_URL} target="_blank" rel="noreferrer" className={LINK_LIGHT}>
-              PRD (PDF)
+              Full PRD
             </a>
           </div>
         </div>
@@ -520,7 +529,7 @@ export function CaseStudyPage() {
             </div>
           </dl>
           <a href={PRD_URL} target="_blank" rel="noreferrer" className={`${LINK_PRIMARY} mt-6`}>
-            Download full PRD
+            Read the full PRD
           </a>
         </Section>
       </main>
